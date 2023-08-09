@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Quiz Challenge</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="programming_hero">Programming Hero</string>
+    <string name="quiz">Quiz</string>
+    <string name="todo">TODO</string>
+    <string name="highscore">Highscore</string>
+    <string name="start">Start</string>
+</resources>
