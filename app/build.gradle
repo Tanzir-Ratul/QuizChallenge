@@ -13,10 +13,9 @@ android {
     defaultConfig {
         applicationId "com.example.quizchallenge"
         minSdk 24
-        targetSdk 33
+        targetSdk 30
         versionCode 1
         versionName "1.0"
-        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -55,8 +54,7 @@ dependencies {
     //Hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-android-compiler:2.44"
-    implementation 'androidx.hilt:hilt-work:1.0.0'
-    kapt 'androidx.hilt:hilt-compiler:1.0.0'
+
     //Gson
     implementation 'com.google.code.gson:gson:2.10.1'
 

@@ -1,6 +1,7 @@
 package com.example.quizchallenge.dependencyInjection
 
 import android.app.Application
+import android.content.Context
 import com.example.quizchallenge.ui.repository.QuizRepository
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(@ApplicationContext application: Application): QuizRepository {
-        return QuizRepository(application)
+    fun provideRepository(@ApplicationContext ctx: Context): QuizRepository {
+        return QuizRepository(ctx)
     }
 }

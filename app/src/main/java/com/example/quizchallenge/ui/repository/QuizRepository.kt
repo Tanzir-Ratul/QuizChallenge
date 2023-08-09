@@ -1,6 +1,6 @@
 package com.example.quizchallenge.ui.repository
 
-import android.app.Application
+import android.content.Context
 import com.example.quizchallenge.ui.models.QuizModel
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +10,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import javax.inject.Inject
 
-class QuizRepository @Inject constructor (private val application: Application) {
+class QuizRepository @Inject constructor (private val ctx: Context) {
 
     suspend fun getQuizData():QuizModel{
         return withContext(Dispatchers.IO){
@@ -22,7 +22,7 @@ class QuizRepository @Inject constructor (private val application: Application) 
     }
     private suspend fun loadJsonFromAsset(filename: String): String {
         return try {
-            val inputStream = application.assets.open(filename)
+            val inputStream = ctx.assets.open(filename)
             val bufferedReader = BufferedReader(InputStreamReader(inputStream))
             val stringBuilder = StringBuilder()
             var line: String?
