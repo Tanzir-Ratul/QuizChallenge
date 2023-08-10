@@ -13,10 +13,10 @@ data class QuizModel(
         var score: Int? // 200
     ) {
         data class Answers(
-            var a: String?, // 1997
-            var b: String?, // 1999
-            var c: String?, // 2001
-            var d: String? // 2004
+            var A: String?, // 1997
+            var B: String?, // 1999
+            var C: String?, // 2001
+            var D: String? // 2004
         )
     }
 }
