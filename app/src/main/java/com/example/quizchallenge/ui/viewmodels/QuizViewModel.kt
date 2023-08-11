@@ -1,10 +1,12 @@
 package com.example.quizchallenge.ui.viewmodels
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
 import com.example.quizchallenge.ui.models.QuizModel
 import com.example.quizchallenge.ui.repository.QuizRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,13 +24,15 @@ class QuizViewModel @Inject constructor(private val repository: QuizRepository) 
 
     private var _question = MutableLiveData<List<QuizModel.Question?>?>()
     val question: LiveData<List<QuizModel.Question?>?> = _question
+
+    var currentPosition = MutableLiveData<Int>().apply { value = 0 }
     init{
         getQuizList()
     }
     private fun getQuizList() {
         viewModelScope.launch {
             val response = repository.getQuizData()
-            if (response != null) {
+            if (response != null ) {
                 _quizList.postValue(response)
                 _question.value = response.questions
                 //_answerList.value = response.questions?.get(0)?.answers
@@ -39,4 +43,11 @@ class QuizViewModel @Inject constructor(private val repository: QuizRepository) 
 
         }
     }
+
+    fun getCurrentPosition(): Int {
+        currentPosition.value =  currentPosition.value?.plus(1) ?: 0
+        return currentPosition.value?:0
+    }
+
+
 }

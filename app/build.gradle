@@ -58,5 +58,15 @@ dependencies {
     //Gson
     implementation 'com.google.code.gson:gson:2.10.1'
 
+    //timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    //picassa
+    implementation 'com.squareup.picasso:picasso:2.8'
+
+
+
 
 }

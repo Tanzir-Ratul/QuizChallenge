@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,18 +10,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/design_default_color_primary"
-        >
+        android:background="@color/design_default_color_primary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/questionCL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/questionCL"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:background="@color/white"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -29,7 +27,7 @@
                 android:layout_height="400dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:src="@drawable/logo_hero"
+                android:src="@drawable/image_placeholder_ot_error"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -39,10 +37,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="100 points"
-                android:padding="2dp"
-                android:textColor="@color/black"
                 android:fontFamily="@font/poppins_bold"
+                android:padding="2dp"
+                android:text="100 points"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,12 +50,12 @@
                 android:id="@+id/questionTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="If the player answers the question correctly i. the selected answer is displayed in green ii. the score is added to the current score"
-                android:layout_marginBottom="5dp"
                 android:layout_marginStart="5sp"
                 android:layout_marginEnd="5dp"
-                android:padding="5dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/poppins_bold"
+                android:padding="5dp"
+                android:text="If the player answers the question correctly i. the selected answer is displayed in green ii. the score is added to the current score"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,15 +63,86 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/containerLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/containerLL"
             android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/questionCL"
-          />
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/questionCL">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView1"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/option_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_bold"
+                android:text="world"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView2"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/option_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_bold"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:visibility="gone"
+                tools:text="world"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView3"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/option_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_bold"
+                android:text="world"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView4"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/option_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/poppins_bold"
+                android:text="world"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
