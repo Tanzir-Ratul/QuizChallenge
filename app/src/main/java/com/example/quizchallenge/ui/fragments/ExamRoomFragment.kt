@@ -29,8 +29,7 @@ import javax.inject.Inject
 class ExamRoomFragment : Fragment() {
     private lateinit var binding: FragmentExamRoomBinding
     private val quizViewModel: QuizViewModel by viewModels()
-    @Inject
-    lateinit var sharedPreferencesManager: SessionManager
+    @Inject lateinit var sharedPreferencesManager: SessionManager
     private var questionListAdapter: QuestionListAdapter? = null
     private lateinit var layoutManager: LinearLayoutManager
     private var llCompat: LinearLayoutCompat? = null

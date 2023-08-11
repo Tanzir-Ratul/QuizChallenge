@@ -1,6 +1,5 @@
 package com.example.quizchallenge.ui.repository
 
-import android.content.Context
 import android.content.SharedPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
