@@ -13,25 +13,24 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.quizchallenge.R
 import com.example.quizchallenge.databinding.FragmentExamRoomBinding
 import com.example.quizchallenge.ui.models.QuizModel
+import com.example.quizchallenge.ui.repository.SessionManager
 import com.example.quizchallenge.ui.viewmodels.QuizViewModel
 import com.example.quizchallenge.utils.customizeClass.SmoothSnapHelper
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ExamRoomFragment : Fragment() {
     private lateinit var binding: FragmentExamRoomBinding
     private val quizViewModel: QuizViewModel by viewModels()
+    @Inject
+    lateinit var sharedPreferencesManager: SessionManager
     private var questionListAdapter: QuestionListAdapter? = null
     private lateinit var layoutManager: LinearLayoutManager
     private var llCompat: LinearLayoutCompat? = null
@@ -63,7 +62,7 @@ class ExamRoomFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        questionListAdapter?.setTextViewCallback = { question, list, linearLayout, position ->
+        questionListAdapter?.setTextViewCallback = { question, list, linearLayout, position,score ->
             answerMap = mapOf<Int, Map<String, String?>>().plus(
                 (position to mapOf(
                     "A" to question?.answers?.A,
@@ -99,7 +98,7 @@ class ExamRoomFragment : Fragment() {
                             textView.setOnClickListener {
                                 isAnswered = true
                                 selectedAnswer = value
-                                onAnswerSelected(value, linearLayout, correctAns)
+                                onAnswerSelected(value, linearLayout, correctAns,score)
                             }
 
                         } else {
@@ -112,6 +111,7 @@ class ExamRoomFragment : Fragment() {
             }
 
         }
+/*
         questionListAdapter?.imageSetCallBack = { url, image ->
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 withContext(Dispatchers.IO) {
@@ -132,12 +132,14 @@ class ExamRoomFragment : Fragment() {
 
 
         }
+*/
     }
 
     private fun onAnswerSelected(
         selectedAnswer: String?,
         containerLL: LinearLayoutCompat?,
         correctAns: String?,
+        score: Int?,
     ) {
 
         containerLL?.children?.forEach { view ->
@@ -146,6 +148,7 @@ class ExamRoomFragment : Fragment() {
 
                 if (selectedAnswer == correctAns) {
                     if (view.text == selectedAnswer) {
+                        quizViewModel.checkHighScoreBit(score)
                         view.setBackgroundResource(R.drawable.correct_option_bg)
                     }
 
@@ -201,11 +204,11 @@ class ExamRoomFragment : Fragment() {
     }
 
     private fun scrollToNextPosition() {
-        if (quizViewModel.currentPosition.value != (questionListAdapter?.itemCount?.minus(1))) {
+        if (quizViewModel.currentPos.value != (questionListAdapter?.itemCount?.minus(1))) {
             binding.recyclerView.smoothScrollToPosition(quizViewModel.getCurrentPosition())
             Log.d(
                 "scrollToNextPosition",
-                "scrollToNextPosition: ${quizViewModel.currentPosition.value}"
+                "scrollToNextPosition: ${quizViewModel.currentPos.value}"
             )
         } else {
             countDownTimer?.cancel()

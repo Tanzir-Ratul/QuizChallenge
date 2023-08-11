@@ -10,13 +10,18 @@ import androidx.navigation.fragment.findNavController
 import com.example.quizchallenge.R
 import com.example.quizchallenge.databinding.FragmentHomeBinding
 import com.example.quizchallenge.databinding.FragmentHomeBinding.inflate
+import com.example.quizchallenge.ui.repository.SessionManager
 import com.example.quizchallenge.ui.viewmodels.QuizViewModel
+import com.example.quizchallenge.utils.customizeClass.addPluralOrSingularity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    @Inject
+    lateinit var sharedPreferencesManager: SessionManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,7 +40,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun initData() {
-      //  TODO("Not yet implemented")
+        var tempString = ""
+        binding.apply {
+            textView.text = addPluralOrSingularity(sharedPreferencesManager.highScore,"point")
+      }
     }
 
     private fun onClick() {

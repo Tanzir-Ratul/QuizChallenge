@@ -25,7 +25,8 @@ class QuizViewModel @Inject constructor(private val repository: QuizRepository) 
     private var _question = MutableLiveData<List<QuizModel.Question?>?>()
     val question: LiveData<List<QuizModel.Question?>?> = _question
 
-    var currentPosition = MutableLiveData<Int>().apply { value = 0 }
+    var currentPos = MutableLiveData<Int>().apply { value = 0 }
+    var highScore = MutableLiveData<Int>().apply { value = 0 }
     init{
         getQuizList()
     }
@@ -43,10 +44,16 @@ class QuizViewModel @Inject constructor(private val repository: QuizRepository) 
 
         }
     }
-
+   fun checkHighScoreBit(newScore:Int?){
+       val scoreValue = newScore?.let { repository.sessionManager.highScore?.plus(it) }
+       if((repository.sessionManager.highScore ?: 0) < (scoreValue ?: 0)){
+          repository.sessionManager.highScore = scoreValue
+           highScore.value = scoreValue
+       }
+   }
     fun getCurrentPosition(): Int {
-        currentPosition.value =  currentPosition.value?.plus(1) ?: 0
-        return currentPosition.value?:0
+        currentPos.value =  currentPos.value?.plus(1) ?: 0
+        return currentPos.value?:0
     }
 
 
