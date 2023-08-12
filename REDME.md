@@ -3,8 +3,8 @@
 This is an example Android project that demonstrates the integration of Hilt for dependency
 injection,
 following the MVVM architecture pattern, and using the Glide library for image loading. Count timer
-is also used in this project.
-With Navigation component.
+is also used in this project. Shared preference is used to store data locally. 
+And Navigation component.
 
 ## Features
 
