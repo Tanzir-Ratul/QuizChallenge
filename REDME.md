@@ -14,10 +14,10 @@ And Navigation component.
 
 ## Dependencies
 
-- Dagger Hilt: 2.40.5
-- Hilt Lifecycle ViewModel: 1.0.0-alpha03
-- Glide: 4.12.0
-- Navigation Component
+- Hilt: 2.44
+- Hilt Lifecycle ViewModel: 2.44
+- Glide: 4.15.1
+- Navigation Component: 2.6.0
 
 ## How to Run
 
