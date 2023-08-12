@@ -23,6 +23,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.quizchallenge.R
 import com.example.quizchallenge.databinding.FragmentExamRoomBinding
 import com.example.quizchallenge.ui.models.QuizModel
@@ -47,9 +48,7 @@ class ExamRoomFragment : Fragment() {
     private var answerMap: Map<Int, Map<String, String?>> = mapOf()
     private var selectedAnswer: String? = ""
     private var correctAns: String? = ""
-    private var currentPosition = 0
     private var isAnswered = false
-    private var score: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -136,28 +135,21 @@ class ExamRoomFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
 
-/*
-        questionListAdapter?.imageSetCallBack = { url, image ->
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                withContext(Dispatchers.IO) {
-                    if (url.isNotEmpty()) {
-                        Glide.with(requireContext())
-                            .asBitmap()
-                            .load(url)
-                            .error(R.drawable.image_placeholder_ot_error)
-                            .submit() // here  are making request to load image
-                            .get()
-                            .let {
-                                image.setImageBitmap(it)
-                            }
 
-                    }
-                }
+        questionListAdapter?.imageSetCallBack = { url, imageView ->
+
+            if (url.isNotEmpty()) {
+                Glide.with(this)
+                    .load(url)
+                    .placeholder(R.drawable.logo_hero)
+                    .error(R.drawable.image_placeholder_ot_error)
+                    .into(imageView)
+            } else {
+                imageView.setImageResource(R.drawable.logo_hero)
             }
 
-
         }
-*/
+
     }
 
     private fun shouldNavigateBack(): Boolean {
@@ -284,7 +276,7 @@ class ExamRoomFragment : Fragment() {
     }
 
     companion object {
-        const val TIME_LIMIT = 2000L
+        const val TIME_LIMIT = 10000L
         const val TIME_INTERVAL = 1000L
     }
 }

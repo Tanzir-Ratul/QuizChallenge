@@ -11,14 +11,13 @@ import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quizchallenge.databinding.QuestionListAdapterBinding
 import com.example.quizchallenge.ui.models.QuizModel
-import com.squareup.picasso.Picasso
 
 class QuestionListAdapter(val ctx: Context) :
     RecyclerView.Adapter<QuestionListAdapter.QuestionViewHolder>() {
 
-    var setTextViewCallback: ((QuizModel.Question?, List<AppCompatTextView>, LinearLayoutCompat, Int,Int) -> Unit)? =
+    var setTextViewCallback: ((QuizModel.Question?, List<AppCompatTextView>, LinearLayoutCompat, Int, Int) -> Unit)? =
         null
-    var imageSetCallBack:((String, ImageView)->Unit)? = null
+    var imageSetCallBack: ((String, ImageView) -> Unit)? = null
     private var questionList: MutableList<QuizModel.Question?> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
@@ -51,26 +50,24 @@ class QuestionListAdapter(val ctx: Context) :
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 binding.pointsTV.text = "${question?.score} points"
                 binding.questionTV.text =
-                    question?.question?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_COMPACT) }
+                    question?.question?.let {
+                        HtmlCompat.fromHtml(
+                            it,
+                            HtmlCompat.FROM_HTML_MODE_COMPACT
+                        )
+                    }
                 setTextViewCallback?.invoke(
                     question, listOf(
                         binding.textView1, binding.textView2, binding.textView3, binding.textView4
-                    ).shuffled(), binding.containerLL, adapterPosition,question?.score?:0
+                    ).shuffled(), binding.containerLL, adapterPosition, question?.score ?: 0
                 )
-                question?.questionImageUrl?.let { setImage(it,adapterPosition) }
-                //question?.questionImageUrl?.let { imageSetCallBack?.invoke(it, binding.imageView) }
+                question?.questionImageUrl?.let { imageSetCallBack?.invoke(it, binding.imageView) }
             }
 
 
         }
 
-        private fun setImage(link: String, adapterPosition: Int) {
-            if (link.isNotEmpty()) {
-                Log.d("link", "setImage: $link pos:$adapterPosition")
-                Picasso.get().load(link).into(binding.imageView)
 
-            }
-        }
     }
 
 }
