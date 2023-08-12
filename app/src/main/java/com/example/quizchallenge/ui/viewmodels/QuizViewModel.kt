@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.example.quizchallenge.ui.models.QuizModel
 import com.example.quizchallenge.ui.repository.QuizRepository
+import com.example.quizchallenge.ui.repository.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class QuizViewModel @Inject constructor(private val repository: QuizRepository) : ViewModel() {
 
+    @Inject lateinit var sharedPreferencesManager: SessionManager
     private var _quizList = MutableLiveData<QuizModel?>()
     val quizList: LiveData<QuizModel?> = _quizList
 
@@ -24,7 +26,7 @@ class QuizViewModel @Inject constructor(private val repository: QuizRepository) 
 
     private var _question = MutableLiveData<List<QuizModel.Question?>?>()
     val question: LiveData<List<QuizModel.Question?>?> = _question
-
+    var scorePerQuestion = MutableLiveData<Int>().apply { value = 0 }
     var currentPos = MutableLiveData<Int>().apply { value = 0 }
     var highScore = MutableLiveData<Int>().apply { value = 0 }
     init{
@@ -45,11 +47,12 @@ class QuizViewModel @Inject constructor(private val repository: QuizRepository) 
         }
     }
    fun checkHighScoreBit(newScore:Int?){
-       val scoreValue = newScore?.let { repository.sessionManager.highScore?.plus(it) }
-       if((repository.sessionManager.highScore ?: 0) < (scoreValue ?: 0)){
-          repository.sessionManager.highScore = scoreValue
-           highScore.value = scoreValue
+       highScore.value = newScore?.let { highScore.value?.plus(it) }
+       if((sharedPreferencesManager.highScore ?: 0) < (highScore.value ?: 0)){
+           sharedPreferencesManager.highScore = highScore.value
+
        }
+
    }
     fun getCurrentPosition(): Int {
         currentPos.value =  currentPos.value?.plus(1) ?: 0

@@ -34,7 +34,6 @@ class QuestionListAdapter(val ctx: Context) :
     }
 
     override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
-        Log.d("position", "bind: $position")
         holder.bind(questionList[position], position)
     }
 

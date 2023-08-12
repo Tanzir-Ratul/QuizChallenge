@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
 class SessionManager @Inject constructor(private val sharedPreferences: SharedPreferences) {
     private val editor = sharedPreferences.edit()
 

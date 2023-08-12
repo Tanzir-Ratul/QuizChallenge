@@ -12,8 +12,7 @@ import javax.inject.Inject
 
 class QuizRepository @Inject constructor (private val ctx: Context) {
 
-    @Inject
-    lateinit var sessionManager: SessionManager
+
     suspend fun getQuizData():QuizModel{
         return withContext(Dispatchers.IO){
             val jsonString = loadJsonFromAsset("quiz.json")
