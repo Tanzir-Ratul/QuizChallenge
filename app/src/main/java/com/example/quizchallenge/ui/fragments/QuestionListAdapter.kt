@@ -46,7 +46,7 @@ class QuestionListAdapter(val ctx: Context) :
     inner class QuestionViewHolder(private val binding: QuestionListAdapterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: QuizModel.Question?, position: Int) {
-            Log.d("modPos", "$adapterPosition")
+           // Log.d("modPos", "$adapterPosition")
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 binding.pointsTV.text = "${question?.score} points"
                 binding.questionTV.text =

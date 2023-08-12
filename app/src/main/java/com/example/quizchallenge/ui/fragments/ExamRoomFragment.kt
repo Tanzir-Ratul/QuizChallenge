@@ -1,18 +1,12 @@
 package com.example.quizchallenge.ui.fragments
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.AppCompatTextView
@@ -24,8 +18,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.quizchallenge.R
 import com.example.quizchallenge.databinding.FragmentExamRoomBinding
 import com.example.quizchallenge.ui.models.QuizModel
@@ -75,54 +67,70 @@ class ExamRoomFragment : Fragment() {
         questionListAdapter?.setTextViewCallback =
             { question, list, linearLayout, position, score ->
 
-                answerMap = mapOf<Int, Map<String, String?>>().plus(
-                    (position to mapOf(
-                        "A" to question?.answers?.A,
-                        "B" to question?.answers?.B,
-                        "C" to question?.answers?.C,
-                        "D" to question?.answers?.D
-                    ))
-                )
+               try {
+                    answerMap = mapOf<Int, Map<String, String?>>().plus(
+                        (position to mapOf(
+                            "A" to question?.answers?.A,
+                            "B" to question?.answers?.B,
+                            "C" to question?.answers?.C,
+                            "D" to question?.answers?.D
+                        ))
+                    )
 //           val temp =  binding.recyclerView.findViewHolderForAdapterPosition(layoutManager.findFirstCompletelyVisibleItemPosition())
-                val correctAns =
-                    answerMap[position]?.get(questionList[position]?.correctAnswer?.trim())
-                this.correctAns = correctAns
-                val innerAnsMap = answerMap[position]
-                Log.d("innerAnsMap", "innerAnsMap: ${(innerAnsMap)}")
+                    val correctAns =
+                        answerMap[position]?.get(questionList[position]?.correctAnswer?.trim())
+                    this.correctAns = correctAns
+                    val innerAnsMap = answerMap[position]
 
-                if (innerAnsMap != null) {
-                    val innerMapSize = innerAnsMap.size
-                    for ((key, value) in innerAnsMap) {
-                        if (value != null) {
-                            val textView = when (key) {
-                                "A" -> list[0]
-                                "B" -> list[1]
-                                "C" -> list[2]
-                                "D" -> list[3]
-                                else -> null
-                            }
-                            textView?.visibility = View.GONE
-                            textView?.setBackgroundResource(R.drawable.option_bg)
+                    // Log.d("innerAnsMap", "innerAnsMap: ${(innerAnsMap)}")
 
-                            if (textView != null && innerAnsMap[key] != null) {
-                               // Log.d("innerKey", "${key} ${value}")
-                                textView.text = answerMap[position]?.get(key)?.trim()
-                                textView.visibility = View.VISIBLE
-                                textView.isClickable = true
+                    if (innerAnsMap != null) {
+                        val positionWiseSize = innerAnsMap.values.count { it != null } ?: 0
+                        // Log.d("innerAnsMap", "size: ${positionWiseSize}")
+                        if (positionWiseSize > 0) {
+                            val keys = innerAnsMap.keys.toList()
+                            for (i in 0 until positionWiseSize) {
+                                val key = keys[i]
+                                val value = innerAnsMap[key]
 
-                                textView.setOnClickListener {
-                                    isAnswered = true
-                                    selectedAnswer = value
-                                    onAnswerSelected(value, linearLayout, correctAns, score)
+
+                                if (value != null) {
+                                    val textView = when (key) {
+                                        "A" -> list[0]
+                                        "B" -> list[1]
+                                        "C" -> list[2]
+                                        "D" -> list[3]
+                                        else -> null
+                                    }
+                                    textView?.setBackgroundResource(R.drawable.option_bg)
+                                    if (textView != null && innerAnsMap[key] != null) {
+                                        // Log.d("innerKey", "${key} ${value}")
+                                        textView.text = innerAnsMap[key]?.trim()
+                                        textView.visibility = View.VISIBLE
+                                        textView.isClickable = true
+
+                                        textView.setOnClickListener {
+                                            isAnswered = true
+                                            selectedAnswer = value
+                                            onAnswerSelected(value, linearLayout, correctAns, score)
+                                        }
+
+                                    }
                                 }
-
-                            } else {
-                                textView?.visibility = View.GONE
+                                // Hide remaining TextViews
+                                for (index in positionWiseSize until list.size) {
+                                    list[index].visibility = View.GONE
+                                }
+                            }
+                        } else {
+                            //if there is no option for the question
+                            for (textView in list) {
+                                textView.visibility = View.GONE
                             }
                         }
-
-
                     }
+                }catch (e:Exception){
+                    e.printStackTrace()
                 }
 
             }
@@ -136,11 +144,14 @@ class ExamRoomFragment : Fragment() {
             }
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            onBackPressedCallback
+        )
 
 
         questionListAdapter?.imageSetCallBack = { url, imageView ->
-            try{
+            try {
                 if (url.isNotEmpty()) {
                     Glide.with(this)
                         .load(url)
@@ -150,7 +161,7 @@ class ExamRoomFragment : Fragment() {
                 } else {
                     imageView.setImageResource(R.drawable.logo_hero)
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
@@ -215,28 +226,28 @@ class ExamRoomFragment : Fragment() {
 
     }
 
-  /*  private fun warningDialog(showMsg: String?, fromlastPos: Boolean) {
-       val warningDialog = Dialog(requireContext())
-        warningDialog.setContentView(R.layout.warning_dialog)
-        // warningDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        warningDialog?.setCancelable(false)
-        warningDialog?.show()
-        val msg = warningDialog?.findViewById<TextView>(R.id.warningTV)
-        msg?.text = showMsg
-        val yesBtn = warningDialog?.findViewById<Button>(R.id.yesBtn)
-        yesBtn?.setOnClickListener {
-            warningDialog?.dismiss()
-            findNavController().popBackStack()
-        }
-        if (fromlastPos) {
-            yesBtn?.visibility = View.GONE
-            Handler(Looper.getMainLooper()).postDelayed({
-                warningDialog?.dismiss()
-                findNavController().navigate(R.id.action_examRoomFragment_to_homeFragment)
-            }, 3000)
-        }
+    /*  private fun warningDialog(showMsg: String?, fromlastPos: Boolean) {
+         val warningDialog = Dialog(requireContext())
+          warningDialog.setContentView(R.layout.warning_dialog)
+          // warningDialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+          warningDialog?.setCancelable(false)
+          warningDialog?.show()
+          val msg = warningDialog?.findViewById<TextView>(R.id.warningTV)
+          msg?.text = showMsg
+          val yesBtn = warningDialog?.findViewById<Button>(R.id.yesBtn)
+          yesBtn?.setOnClickListener {
+              warningDialog?.dismiss()
+              findNavController().popBackStack()
+          }
+          if (fromlastPos) {
+              yesBtn?.visibility = View.GONE
+              Handler(Looper.getMainLooper()).postDelayed({
+                  warningDialog?.dismiss()
+                  findNavController().navigate(R.id.action_examRoomFragment_to_homeFragment)
+              }, 3000)
+          }
 
-    }*/
+      }*/
 
     private fun setupCountDownTimer() {
         countDownTimer = object : CountDownTimer(TIME_LIMIT, TIME_INTERVAL) {
@@ -254,13 +265,23 @@ class ExamRoomFragment : Fragment() {
     }
 
     private fun scrollToNextPosition() {
-        if (quizViewModel.currentPos.value != (questionListAdapter?.itemCount?.minus(1))) {
-            binding.recyclerView.smoothScrollToPosition(quizViewModel.getCurrentPosition())
-        } else {
-            countDownTimer?.cancel()
-            binding.progress.visibility = View.GONE
-            Toast.makeText(requireContext(), "Congratulations You have completed your Quiz", Toast.LENGTH_SHORT).show()
-            findNavController().popBackStack()
+        try{
+            if (quizViewModel.currentPos.value != (questionListAdapter?.itemCount?.minus(1))) {
+                binding.recyclerView.smoothScrollToPosition(quizViewModel.getCurrentPosition())
+            } else {
+                countDownTimer?.cancel()
+                binding.progress.visibility = View.GONE
+                if(context!=null){
+                    Toast.makeText(
+                        requireContext(),
+                        "Congratulations You have completed your test",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                findNavController().popBackStack()
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
         }
 
     }

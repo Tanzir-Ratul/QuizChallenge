@@ -8,4 +8,7 @@
     <string name="highscore">Highscore</string>
     <string name="start">Start</string>
     <string name="congratulations">Congratulations</string>
+    <string name="are_you_ready_to_start_the_test">Take a deep Breath. Are you ready to start the test?</string>
+    <string name="startA">Start</string>
+    <string name="cancel">Cancel</string>
 </resources>
