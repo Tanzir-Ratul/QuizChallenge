@@ -21,11 +21,12 @@
         android:name="com.example.quizchallenge.ui.fragments.ExamRoomFragment"
         android:label="fragment_exam_room"
         tools:layout="@layout/fragment_exam_room" >
-        <action
+       <!-- <action
             android:id="@+id/action_examRoomFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/homeFragment" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/homeFragment" />-->
     </fragment>
 </navigation>

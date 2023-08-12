@@ -24,6 +24,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.quizchallenge.R
 import com.example.quizchallenge.databinding.FragmentExamRoomBinding
 import com.example.quizchallenge.ui.models.QuizModel
@@ -42,7 +44,6 @@ class ExamRoomFragment : Fragment() {
     lateinit var sharedPreferencesManager: SessionManager
     private var questionListAdapter: QuestionListAdapter? = null
     private lateinit var layoutManager: LinearLayoutManager
-    private var llCompat: LinearLayoutCompat? = null
     private var countDownTimer: CountDownTimer? = null
     private var questionList: MutableList<QuizModel.Question?> = mutableListOf()
     private var answerMap: Map<Int, Map<String, String?>> = mapOf()
@@ -73,7 +74,7 @@ class ExamRoomFragment : Fragment() {
     private fun setOnClickListeners() {
         questionListAdapter?.setTextViewCallback =
             { question, list, linearLayout, position, score ->
-                quizViewModel.scorePerQuestion.value = score
+
                 answerMap = mapOf<Int, Map<String, String?>>().plus(
                     (position to mapOf(
                         "A" to question?.answers?.A,
@@ -86,10 +87,11 @@ class ExamRoomFragment : Fragment() {
                 val correctAns =
                     answerMap[position]?.get(questionList[position]?.correctAnswer?.trim())
                 this.correctAns = correctAns
-                llCompat = linearLayout
-                Log.d("cPosition", "setOnClickListeners: ${(position)}")
                 val innerAnsMap = answerMap[position]
+                Log.d("innerAnsMap", "innerAnsMap: ${(innerAnsMap)}")
+
                 if (innerAnsMap != null) {
+                    val innerMapSize = innerAnsMap.size
                     for ((key, value) in innerAnsMap) {
                         if (value != null) {
                             val textView = when (key) {
@@ -100,11 +102,12 @@ class ExamRoomFragment : Fragment() {
                                 else -> null
                             }
                             textView?.visibility = View.GONE
+                            textView?.setBackgroundResource(R.drawable.option_bg)
+
                             if (textView != null && innerAnsMap[key] != null) {
-                                Log.d("innerKey", "${key} ${value}")
+                               // Log.d("innerKey", "${key} ${value}")
                                 textView.text = answerMap[position]?.get(key)?.trim()
                                 textView.visibility = View.VISIBLE
-                                textView.setBackgroundResource(R.drawable.option_bg)
                                 textView.isClickable = true
 
                                 textView.setOnClickListener {
@@ -137,15 +140,18 @@ class ExamRoomFragment : Fragment() {
 
 
         questionListAdapter?.imageSetCallBack = { url, imageView ->
-
-            if (url.isNotEmpty()) {
-                Glide.with(this)
-                    .load(url)
-                    .placeholder(R.drawable.logo_hero)
-                    .error(R.drawable.image_placeholder_ot_error)
-                    .into(imageView)
-            } else {
-                imageView.setImageResource(R.drawable.logo_hero)
+            try{
+                if (url.isNotEmpty()) {
+                    Glide.with(this)
+                        .load(url)
+                        .placeholder(R.drawable.logo_hero)
+                        .error(R.drawable.image_placeholder_ot_error)
+                        .into(imageView)
+                } else {
+                    imageView.setImageResource(R.drawable.logo_hero)
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
             }
 
         }
@@ -186,8 +192,8 @@ class ExamRoomFragment : Fragment() {
             }
         }
         if (isAnswered) {
+            countDownTimer?.cancel()
             Handler(Looper.getMainLooper()).postDelayed({
-                countDownTimer?.cancel()
                 scrollToNextPosition()
                 countDownTimer?.start() // Restart the timer
             }, 2000)

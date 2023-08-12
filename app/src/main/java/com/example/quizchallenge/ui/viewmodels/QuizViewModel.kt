@@ -26,7 +26,6 @@ class QuizViewModel @Inject constructor(private val repository: QuizRepository) 
 
     private var _question = MutableLiveData<List<QuizModel.Question?>?>()
     val question: LiveData<List<QuizModel.Question?>?> = _question
-    var scorePerQuestion = MutableLiveData<Int>().apply { value = 0 }
     var currentPos = MutableLiveData<Int>().apply { value = 0 }
     var highScore = MutableLiveData<Int>().apply { value = 0 }
     init{
